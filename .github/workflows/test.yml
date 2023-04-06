@@ -1,4 +1,4 @@
-name: Commit
+name: Test workflow
 on: workflow_dispatch
 jobs:
   job_name:
@@ -6,3 +6,7 @@ jobs:
     steps: 
       - name: Print to console
         run: echo Hello World!
+      - name: Print a few lines
+        run: |
+          echo Line 1!
+          echo Line 2!
