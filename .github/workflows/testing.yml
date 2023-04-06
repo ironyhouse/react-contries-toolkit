@@ -1,0 +1,15 @@
+name: Test App
+on: push
+jobs:
+  test_app: 
+    runs-on: ubuntu-latest
+    steps:
+       # Get repository code using github action - actions/checkout@v3
+      - name: Get repository code
+        uses: actions/checkout@v3
+       # Install dependecies using
+      - name: Install dependecies
+        run: npm ci
+       # Run tests
+      - name: Test application
+        run: npm run test
