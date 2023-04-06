@@ -52,12 +52,20 @@ jobs:
       - name: Test application
         run: npm run test
   build:
-    runs-on: ubuntu-latest
     # waiting for dependent jobs to complete successfully before running the current job
     needs: [lint, test]
+    strategy:
+      matrix:
+        node-versions: [14, 16]
+        use_os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.use_os }}
     steps:
       - name: Get repository code
         uses: actions/checkout@v3
+      - name: Install Node JS
+        uses: actions/setup-node@v3
+        with:
+          node-version:  ${{ matrix.node-version }}
       - name: Cache deps
         uses: actions/cache@v3
         with:
