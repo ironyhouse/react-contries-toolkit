@@ -1,0 +1,8 @@
+name: Commit
+on: workflow_dispatch
+jobs:
+  job_name:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Print to console
+        run: echo Hello World!
