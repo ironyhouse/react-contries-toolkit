@@ -54,7 +54,10 @@ jobs:
   build:
     # waiting for dependent jobs to complete successfully before running the current job
     needs: [lint, test]
+    # continue if job failed
+    # continue-on-error: true
     strategy:
+      # add some allies
       matrix:
         node-versions: [14, 16]
         use_os: [ubuntu-latest, windows-latest]
