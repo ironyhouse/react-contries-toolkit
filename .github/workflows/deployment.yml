@@ -1,5 +1,18 @@
 name: Test App
-on: push
+on:
+  # or workflow_dispatch
+  # or [push, workflow_dispatch]
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/workflows/*'
+  pull_request:
+    branches:
+      # only for branches named feature/...
+      - 'feature/**'
+    types: [opened, edited, reopened]
 jobs:
   lint:
     runs-on: ubuntu-latest
