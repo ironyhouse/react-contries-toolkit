@@ -10,6 +10,5 @@ test('renders Hello World string', () => {
       <App />
     // </Provider>
   );
-
   // expect(getByText(/Hello World/i)).toBeInTheDocument();
 });
