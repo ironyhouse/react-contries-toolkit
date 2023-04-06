@@ -20,6 +20,14 @@ jobs:
       # Get repository code using github action - actions/checkout@v3
       - name: Get repository code
         uses: actions/checkout@v3
+       # Add cache deps to increase job speed
+      - name: Cache deps
+        uses: actions/cache@v3
+        with:
+          # "~/" - default ubuntu path
+          path: ~/.npm
+          # hashFiles('**/package-lock.json') - check valid cache or not
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
       # Install dependecies using
       - name: Install dependecies
         run: npm ci
@@ -28,10 +36,16 @@ jobs:
         run: npm run lint
   test: 
     runs-on: ubuntu-latest
-    needs: lint
     steps:
       - name: Get repository code
         uses: actions/checkout@v3
+      - name: Cache deps
+        uses: actions/cache@v3
+        with:
+          # "~/" - default ubuntu path
+          path: ~/.npm
+          # hashFiles('**/package-lock.json') - check valid cache or not
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependecies
         run: npm ci
       # Run tests
@@ -39,10 +53,18 @@ jobs:
         run: npm run test
   build:
     runs-on: ubuntu-latest
-    needs: test
+    # waiting for dependent jobs to complete successfully before running the current job
+    needs: [lint, test]
     steps:
       - name: Get repository code
         uses: actions/checkout@v3
+      - name: Cache deps
+        uses: actions/cache@v3
+        with:
+          # "~/" - default ubuntu path
+          path: ~/.npm
+          # hashFiles('**/package-lock.json') - check valid cache or not
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependecies
         run: npm ci
       # Build lint
