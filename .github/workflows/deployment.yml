@@ -20,7 +20,7 @@ jobs:
       # Get repository code using github action - actions/checkout@v3
       - name: Get repository code
         uses: actions/checkout@v3
-       # Add cache deps to increase job speed
+      # Add cache deps to increase job speed
       - name: Cache deps
         uses: actions/cache@v3
         with:
@@ -34,7 +34,7 @@ jobs:
       # Run lint
       - name: Lint application
         run: npm run lint
-  test: 
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Get repository code
@@ -56,7 +56,7 @@ jobs:
     needs: [lint, test]
     strategy:
       matrix:
-        node-versions: [14, 16]
+        node_versions: [14, 16]
         use_os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.use_os }}
     steps:
@@ -65,7 +65,7 @@ jobs:
       - name: Install Node JS
         uses: actions/setup-node@v3
         with:
-          node-version:  ${{ matrix.node-version }}
+          node-version:  ${{ matrix.node_versions }}
       - name: Cache deps
         uses: actions/cache@v3
         with:
@@ -75,9 +75,22 @@ jobs:
           key: node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependecies
         run: npm ci
-      # Build lint
+      # Build
       - name: Build application
         run: npm run build
-      # Deploy lint
-      - name: Deploy application
-        run: echo Deploying...
+      # Save Builded project to use in Deploy
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: build
+          name: build_name
+  deploy:
+      # Deploy
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+      # Get builded project
+      - name: Get builded application
+        uses: actions/download-artifact@v3
+        with:
+          name: build_name
