@@ -1,7 +1,7 @@
 name: Test App
 on: push
 jobs:
-  test: 
+  lint:
     runs-on: ubuntu-latest
     steps:
       # Get repository code using github action - actions/checkout@v3
@@ -10,21 +10,23 @@ jobs:
       # Install dependecies using
       - name: Install dependecies
         run: npm ci
-      # Run tests
-      - name: Test application
-        run: npm run test
-  lint:
+      # Run lint
+      - name: Lint application
+        run: npm run lint
+  test: 
     runs-on: ubuntu-latest
+    needs: lint
     steps:
       - name: Get repository code
         uses: actions/checkout@v3
       - name: Install dependecies
         run: npm ci
-      # Run lint
-      - name: Lint application
-        run: npm run lint
+      # Run tests
+      - name: Test application
+        run: npm run test
   build:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - name: Get repository code
         uses: actions/checkout@v3
