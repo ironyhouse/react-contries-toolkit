@@ -1,0 +1,38 @@
+name: Test App
+on: push
+jobs:
+  test: 
+    runs-on: ubuntu-latest
+    steps:
+      # Get repository code using github action - actions/checkout@v3
+      - name: Get repository code
+        uses: actions/checkout@v3
+      # Install dependecies using
+      - name: Install dependecies
+        run: npm ci
+      # Run tests
+      - name: Test application
+        run: npm run test
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Install dependecies
+        run: npm ci
+      # Run lint
+      - name: Lint application
+        run: npm run lint
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Install dependecies
+        run: npm ci
+      # Build lint
+      - name: Build application
+        run: npm run build
+      # Deploy lint
+      - name: Deploy application
+        run: echo Deploying...
