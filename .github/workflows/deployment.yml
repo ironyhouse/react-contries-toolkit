@@ -1,0 +1,75 @@
+name: Test App
+on:
+  # or workflow_dispatch
+  # or [push, workflow_dispatch]
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/workflows/*'
+  pull_request:
+    branches:
+      # only for branches named feature/...
+      - 'feature/**'
+    types: [opened, edited, reopened]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Get repository code using github action - actions/checkout@v3
+      - name: Get repository code
+        uses: actions/checkout@v3
+       # Add cache deps to increase job speed
+      - name: Cache deps
+        uses: actions/cache@v3
+        with:
+          # "~/" - default ubuntu path
+          path: ~/.npm
+          # hashFiles('**/package-lock.json') - check valid cache or not
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+      # Install dependecies using
+      - name: Install dependecies
+        run: npm ci
+      # Run lint
+      - name: Lint application
+        run: npm run lint
+  test: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Cache deps
+        uses: actions/cache@v3
+        with:
+          # "~/" - default ubuntu path
+          path: ~/.npm
+          # hashFiles('**/package-lock.json') - check valid cache or not
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependecies
+        run: npm ci
+      # Run tests
+      - name: Test application
+        run: npm run test
+  build:
+    runs-on: ubuntu-latest
+    # waiting for dependent jobs to complete successfully before running the current job
+    needs: [lint, test]
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Cache deps
+        uses: actions/cache@v3
+        with:
+          # "~/" - default ubuntu path
+          path: ~/.npm
+          # hashFiles('**/package-lock.json') - check valid cache or not
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependecies
+        run: npm ci
+      # Build lint
+      - name: Build application
+        run: npm run build
+      # Deploy lint
+      - name: Deploy application
+        run: echo Deploying...
