@@ -34,7 +34,7 @@ jobs:
       # Run lint
       - name: Lint application
         run: npm run lint
-  test:
+  prettier:
     runs-on: ubuntu-latest
     steps:
       - name: Get repository code
@@ -49,11 +49,26 @@ jobs:
       - name: Install dependecies
         run: npm ci
       # Run tests
+      - name: Prettier check
+        run: npm run check
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Cache deps
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependecies
+        run: npm ci
+      # Run tests
       - name: Test application
         run: npm run test
   build:
     # waiting for dependent jobs to complete successfully before running the current job
-    needs: [lint, test]
+    needs: [lint, prettier, test]
     # continue if job failed
     # continue-on-error: true
     strategy:
