@@ -1,18 +1,18 @@
-import { SET_COUNTRIES, SET_ERROR, SET_LOADING } from './action'
+import { SET_COUNTRY, SET_ERROR, SET_LOADING } from './action'
 
 const initialState = {
-  list: [],
+  currentCountry: null,
   status: 'idle',
   error: null,
 }
 
-export const countriesReducer = (state = initialState, { type, payload }) => {
+export const detailsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case SET_COUNTRIES:
+    case SET_COUNTRY:
       return {
         ...state,
         status: 'received',
-        list: payload,
+        currentCountry: payload,
       }
     case SET_LOADING:
       return {
