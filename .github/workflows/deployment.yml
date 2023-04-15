@@ -68,7 +68,7 @@ jobs:
       - name: Install Node JS
         uses: actions/setup-node@v3
         with:
-          node-version:  ${{ matrix.node_versions }}
+          node-version: ${{ matrix.node_versions }}
       - name: Cache deps
         uses: actions/cache@v3
         with:
@@ -88,10 +88,10 @@ jobs:
           path: build
           name: build_name
   deploy:
-      # Deploy
-      needs: build
-      runs-on: ubuntu-latest
-      steps:
+    # Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       # Get builded project
       - name: Get builded application
         uses: actions/download-artifact@v3

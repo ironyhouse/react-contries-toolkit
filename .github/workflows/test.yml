@@ -3,7 +3,7 @@ on: workflow_dispatch
 jobs:
   job_name:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: Print to console
         run: echo Hello World!
       - name: Print a few lines
