@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { IoMoon, IoMoonOutline } from 'react-icons/io5'
-
 import { Container } from './Container'
 import { setTheme } from '../redux/theme/action'
 
