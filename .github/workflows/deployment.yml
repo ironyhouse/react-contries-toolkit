@@ -52,6 +52,7 @@ jobs:
       - name: Prettier check
         run: npm run check
   test:
+    needs: [lint, prettier]
     runs-on: ubuntu-latest
     steps:
       - name: Get repository code
@@ -68,7 +69,7 @@ jobs:
         run: npm run test
   build:
     # waiting for dependent jobs to complete successfully before running the current job
-    needs: [lint, prettier, test]
+    needs: [test]
     # continue if job failed
     # continue-on-error: true
     strategy:

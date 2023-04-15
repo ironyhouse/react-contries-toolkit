@@ -4,7 +4,7 @@ import { Button } from '../components/Button'
 import { Info } from '../components/Info'
 
 export const Details = () => {
-  const { name } = useParams()
+  // const { name } = useParams()
   const navigate = useNavigate()
 
   const currentCountry = null
