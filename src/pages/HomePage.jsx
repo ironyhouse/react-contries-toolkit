@@ -9,14 +9,14 @@ import {
   selectCountriesInfo,
   selectVisibleCountries,
 } from '../redux/countries/selector'
-import { selectSearch } from '../redux/controls/selector'
+import { selectControls } from '../redux/controls/selector'
 
 export const HomePage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const search = useSelector(selectSearch)
+  const { search, region } = useSelector(selectControls)
   const countries = useSelector((state) =>
-    selectVisibleCountries(state, { search })
+    selectVisibleCountries(state, { search, region })
   )
   const { status, error, counter } = useSelector(selectCountriesInfo)
 
