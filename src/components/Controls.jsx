@@ -33,7 +33,7 @@ export const Controls = () => {
         isClearable
         isSearchable={false}
         value={''}
-        onChange={() => {}}
+        // onChange={() => {}}
       />
     </Wrapper>
   )
