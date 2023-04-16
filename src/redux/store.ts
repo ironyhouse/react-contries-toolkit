@@ -1,17 +1,27 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
-// import counterReducer from '../features/counter/counterSlice';
+import { createStore, compose, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import { rootReducer } from './root-reducer'
+import axios from 'axios'
+import * as api from '../config'
 
-export const store = configureStore({
-  reducer: {
-    // counter: counterReducer,
-  },
-})
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose
+  }
+}
 
-export type AppDispatch = typeof store.dispatch
-export type RootState = ReturnType<typeof store.getState>
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
+const store = createStore(
+  rootReducer,
+  composeEnhancers(
+    applyMiddleware(
+      thunk.withExtraArgument({
+        client: axios,
+        api,
+      })
+    )
+  )
+)
+
+export { store }
